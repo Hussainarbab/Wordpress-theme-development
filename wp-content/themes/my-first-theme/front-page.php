@@ -77,6 +77,27 @@ $cta_button_url  = get_theme_mod( 'cta_button_url', home_url( '/contact/' ) );
 						'title'  => get_theme_mod( 'service_three_title', __( 'Ongoing support', 'my-first-theme' ) ),
 						'text'   => get_theme_mod( 'service_three_text', __( 'Practical help, updates and improvements to keep your website working hard.', 'my-first-theme' ) ),
 					),
+					array(
+						'number' => '04',
+						'icon'   => 'theme',
+						'meta'   => __( 'Custom · Flexible · Unique', 'my-first-theme' ),
+						'title'  => get_theme_mod( 'service_four_title', __( 'Custom theme development', 'my-first-theme' ) ),
+						'text'   => get_theme_mod( 'service_four_text', __( 'Purpose-built WordPress themes with the features and editing tools your business needs.', 'my-first-theme' ) ),
+					),
+					array(
+						'number' => '05',
+						'icon'   => 'commerce',
+						'meta'   => __( 'Shop · Sell · Grow', 'my-first-theme' ),
+						'title'  => get_theme_mod( 'service_five_title', __( 'E-commerce solutions', 'my-first-theme' ) ),
+						'text'   => get_theme_mod( 'service_five_text', __( 'Easy-to-manage online stores that make browsing, buying and checkout feel simple.', 'my-first-theme' ) ),
+					),
+					array(
+						'number' => '06',
+						'icon'   => 'growth',
+						'meta'   => __( 'Search · Speed · Results', 'my-first-theme' ),
+						'title'  => get_theme_mod( 'service_six_title', __( 'SEO & performance', 'my-first-theme' ) ),
+						'text'   => get_theme_mod( 'service_six_text', __( 'Technical improvements that help your website load quickly and get discovered online.', 'my-first-theme' ) ),
+					),
 				);
 
 				foreach ( $services as $service ) :

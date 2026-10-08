@@ -1,0 +1,4 @@
+Nexa Studio is distributed under the GNU General Public License, version 2 or
+any later version, at your option.
+
+License text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html

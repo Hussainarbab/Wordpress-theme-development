@@ -25,6 +25,24 @@ function my_first_theme_setup() {
 	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'editor-styles' );
 	add_theme_support(
+		'woocommerce',
+		array(
+			'thumbnail_image_width' => 480,
+			'single_image_width'    => 900,
+			'product_grid'          => array(
+				'default_rows'    => 3,
+				'min_rows'        => 1,
+				'max_rows'        => 6,
+				'default_columns' => 3,
+				'min_columns'     => 1,
+				'max_columns'     => 4,
+			),
+		)
+	);
+	add_theme_support( 'wc-product-gallery-zoom' );
+	add_theme_support( 'wc-product-gallery-lightbox' );
+	add_theme_support( 'wc-product-gallery-slider' );
+	add_theme_support(
 		'html5',
 		array(
 			'search-form',
@@ -45,6 +63,7 @@ function my_first_theme_setup() {
 	);
 
 	add_image_size( 'my-first-theme-card', 720, 480, true );
+	add_editor_style( 'style.css' );
 }
 add_action( 'after_setup_theme', 'my_first_theme_setup' );
 
@@ -58,6 +77,22 @@ function my_first_theme_assets() {
 		$theme_version
 	);
 
+	$primary_color    = sanitize_hex_color( get_theme_mod( 'nexa_primary_color', '#7157f5' ) );
+	$accent_color     = sanitize_hex_color( get_theme_mod( 'nexa_accent_color', '#a9f6ee' ) );
+	$background_color = sanitize_hex_color( get_theme_mod( 'nexa_background_color', '#f7f8fc' ) );
+	$text_color       = sanitize_hex_color( get_theme_mod( 'nexa_text_color', '#111a35' ) );
+	$content_width    = min( 1440, max( 960, absint( get_theme_mod( 'nexa_content_width', 1180 ) ) ) );
+
+	$design_css = sprintf(
+		':root{--color-primary:%1$s;--color-accent:%2$s;--color-paper:%3$s;--color-ink:%4$s;--content-width:%5$dpx;}',
+		$primary_color ? $primary_color : '#7157f5',
+		$accent_color ? $accent_color : '#a9f6ee',
+		$background_color ? $background_color : '#f7f8fc',
+		$text_color ? $text_color : '#111a35',
+		$content_width
+	);
+	wp_add_inline_style( 'my-first-theme-style', $design_css );
+
 	wp_enqueue_script(
 		'my-first-theme-navigation',
 		get_template_directory_uri() . '/assets/js/navigation.js',
@@ -67,6 +102,17 @@ function my_first_theme_assets() {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'my_first_theme_assets' );
+
+function my_first_theme_body_classes( $classes ) {
+	$header_layout = get_theme_mod( 'nexa_header_layout', 'left' );
+	$font_family   = get_theme_mod( 'nexa_font_family', 'system' );
+
+	$classes[] = 'nexa-header-layout-' . sanitize_html_class( $header_layout );
+	$classes[] = 'nexa-font-' . sanitize_html_class( $font_family );
+
+	return $classes;
+}
+add_filter( 'body_class', 'my_first_theme_body_classes' );
 
 function my_first_theme_widgets_init() {
 	register_sidebar(
@@ -85,11 +131,132 @@ add_action( 'widgets_init', 'my_first_theme_widgets_init' );
 
 function my_first_theme_customize_register( $wp_customize ) {
 	$wp_customize->add_section(
+		'nexa_studio_design',
+		array(
+			'title'       => __( 'Theme Design', 'my-first-theme' ),
+			'description' => __( 'Set global colors, typography, header alignment and content width.', 'my-first-theme' ),
+			'priority'    => 29,
+		)
+	);
+
+	$design_controls = array(
+		'nexa_primary_color'    => array( 'color', __( 'Primary color', 'my-first-theme' ), '#7157f5' ),
+		'nexa_accent_color'     => array( 'color', __( 'Accent color', 'my-first-theme' ), '#a9f6ee' ),
+		'nexa_background_color' => array( 'color', __( 'Page background', 'my-first-theme' ), '#f7f8fc' ),
+		'nexa_text_color'       => array( 'color', __( 'Text color', 'my-first-theme' ), '#111a35' ),
+	);
+
+	foreach ( $design_controls as $setting_id => $control ) {
+		$wp_customize->add_setting(
+			$setting_id,
+			array(
+				'default'           => $control[2],
+				'sanitize_callback' => 'sanitize_hex_color',
+				'transport'         => 'refresh',
+			)
+		);
+		$wp_customize->add_control(
+			new WP_Customize_Color_Control(
+				$wp_customize,
+				$setting_id,
+				array(
+					'label'   => $control[1],
+					'section' => 'nexa_studio_design',
+				)
+			)
+		);
+	}
+
+	$wp_customize->add_setting(
+		'nexa_content_width',
+		array(
+			'default'           => 1180,
+			'sanitize_callback' => 'absint',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'nexa_content_width',
+		array(
+			'label'       => __( 'Content width (px)', 'my-first-theme' ),
+			'description' => __( 'Choose a width between 960px and 1440px.', 'my-first-theme' ),
+			'section'     => 'nexa_studio_design',
+			'type'        => 'number',
+			'input_attrs' => array(
+				'min'  => 960,
+				'max'  => 1440,
+				'step' => 20,
+			),
+		)
+	);
+
+	$wp_customize->add_setting(
+		'nexa_header_layout',
+		array(
+			'default'           => 'left',
+			'sanitize_callback' => 'sanitize_key',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'nexa_header_layout',
+		array(
+			'label'   => __( 'Header alignment', 'my-first-theme' ),
+			'section' => 'nexa_studio_design',
+			'type'    => 'select',
+			'choices' => array(
+				'left'     => __( 'Logo left, menu right', 'my-first-theme' ),
+				'centered' => __( 'Centered logo with menu below', 'my-first-theme' ),
+			),
+		)
+	);
+
+	$wp_customize->add_setting(
+		'nexa_font_family',
+		array(
+			'default'           => 'system',
+			'sanitize_callback' => 'sanitize_key',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'nexa_font_family',
+		array(
+			'label'   => __( 'Font style', 'my-first-theme' ),
+			'section' => 'nexa_studio_design',
+			'type'    => 'select',
+			'choices' => array(
+				'system'    => __( 'Modern sans serif', 'my-first-theme' ),
+				'geometric' => __( 'Soft geometric sans serif', 'my-first-theme' ),
+				'serif'     => __( 'Classic serif', 'my-first-theme' ),
+			),
+		)
+	);
+
+	$wp_customize->add_section(
 		'my_first_theme_homepage',
 		array(
 			'title'       => __( 'Homepage Content', 'my-first-theme' ),
 			'description' => __( 'Edit homepage and About page content and sections.', 'my-first-theme' ),
 			'priority'    => 30,
+		)
+	);
+
+	$wp_customize->add_setting(
+		'my_first_theme_brand_name',
+		array(
+			'default'           => __( 'Nexa Studio', 'my-first-theme' ),
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		)
+	);
+	$wp_customize->add_control(
+		'my_first_theme_brand_name',
+		array(
+			'label'       => __( 'Brand name', 'my-first-theme' ),
+			'description' => __( 'Shown in the site header and footer when no logo is set.', 'my-first-theme' ),
+			'section'     => 'my_first_theme_homepage',
+			'type'        => 'text',
 		)
 	);
 
@@ -118,6 +285,12 @@ function my_first_theme_customize_register( $wp_customize ) {
 		'service_two_text'   => array( 'textarea', __( 'Service 2 description', 'my-first-theme' ), '' ),
 		'service_three_title'=> array( 'text', __( 'Service 3 heading', 'my-first-theme' ), '' ),
 		'service_three_text' => array( 'textarea', __( 'Service 3 description', 'my-first-theme' ), '' ),
+		'service_four_title'  => array( 'text', __( 'Service 4 heading', 'my-first-theme' ), '' ),
+		'service_four_text'   => array( 'textarea', __( 'Service 4 description', 'my-first-theme' ), '' ),
+		'service_five_title'  => array( 'text', __( 'Service 5 heading', 'my-first-theme' ), '' ),
+		'service_five_text'   => array( 'textarea', __( 'Service 5 description', 'my-first-theme' ), '' ),
+		'service_six_title'   => array( 'text', __( 'Service 6 heading', 'my-first-theme' ), '' ),
+		'service_six_text'    => array( 'textarea', __( 'Service 6 description', 'my-first-theme' ), '' ),
 		'posts_eyebrow'      => array( 'text', __( 'Latest posts label', 'my-first-theme' ), '' ),
 		'posts_title'        => array( 'text', __( 'Latest posts heading', 'my-first-theme' ), '' ),
 		'cta_title'          => array( 'text', __( 'Call-to-action heading', 'my-first-theme' ), '' ),
@@ -151,6 +324,12 @@ function my_first_theme_customize_register( $wp_customize ) {
 		'service_two_text'    => __( 'Flexible, fast websites built so you can confidently manage your content yourself.', 'my-first-theme' ),
 		'service_three_title' => __( 'Ongoing support', 'my-first-theme' ),
 		'service_three_text'  => __( 'Practical help, updates and improvements to keep your website working hard.', 'my-first-theme' ),
+		'service_four_title'  => __( 'Custom theme development', 'my-first-theme' ),
+		'service_four_text'   => __( 'Purpose-built WordPress themes with the features and editing tools your business needs.', 'my-first-theme' ),
+		'service_five_title'  => __( 'E-commerce solutions', 'my-first-theme' ),
+		'service_five_text'   => __( 'Easy-to-manage online stores that make browsing, buying and checkout feel simple.', 'my-first-theme' ),
+		'service_six_title'   => __( 'SEO & performance', 'my-first-theme' ),
+		'service_six_text'    => __( 'Technical improvements that help your website load quickly and get discovered online.', 'my-first-theme' ),
 		'posts_eyebrow'       => __( 'From the journal', 'my-first-theme' ),
 		'posts_title'         => __( 'Ideas, updates and useful reads.', 'my-first-theme' ),
 		'cta_title'           => __( 'Have a good idea? Let’s make it happen.', 'my-first-theme' ),

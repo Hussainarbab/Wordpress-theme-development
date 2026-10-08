@@ -1,9 +1,14 @@
 /*
-Theme Name: My First Theme
+Theme Name: Nexa Studio
 Author: Hussain
-Description: A responsive, customizable business theme with a polished homepage, blog and contact page.
-Version: 2.1.0
+Description: A responsive digital business theme with an editable homepage, About page, blog and contact form.
+Version: 2.3.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: my-first-theme
+Tags: custom-logo, custom-menu, featured-images, e-commerce, translation-ready
 */
 
 :root {
@@ -106,6 +111,29 @@ textarea {
 	margin: 0 auto;
 }
 
+body.nexa-header-layout-centered .site-header-inner {
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.35rem;
+	padding: 1rem 0;
+}
+
+body.nexa-header-layout-centered .site-branding {
+	justify-content: center;
+}
+
+body.nexa-header-layout-centered .primary-navigation .menu {
+	justify-content: center;
+}
+
+body.nexa-font-geometric {
+	--font-body: "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+body.nexa-font-serif {
+	--font-body: Georgia, "Times New Roman", serif;
+}
+
 .site-branding {
 	display: flex;
 	align-items: center;
@@ -196,6 +224,15 @@ textarea {
 
 .menu-toggle[aria-expanded="true"] .menu-toggle-icon span:last-child {
 	transform: translateY(-6px) rotate(-45deg);
+}
+
+@media (max-width: 720px) {
+	body.nexa-header-layout-centered .site-header-inner {
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0;
+	}
 }
 
 .hero-section {
@@ -526,6 +563,18 @@ textarea {
 
 .service-icon-support {
 	background: linear-gradient(145deg, #ddfaf4, #d0f4ee);
+}
+
+.service-icon-theme {
+	background: linear-gradient(145deg, #fff0dc, #ffe4c6);
+}
+
+.service-icon-commerce {
+	background: linear-gradient(145deg, #ffe7f0, #fbd8e8);
+}
+
+.service-icon-growth {
+	background: linear-gradient(145deg, #e4f4e9, #d7f0df);
 }
 
 .service-number {
@@ -1127,6 +1176,101 @@ textarea {
 	font-weight: 400;
 }
 
+.woocommerce .products,
+.woocommerce-page .products {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.5rem;
+	margin: 2rem 0;
+	padding: 0;
+	list-style: none;
+}
+
+.woocommerce ul.products::before,
+.woocommerce ul.products::after {
+	display: none;
+}
+
+.woocommerce ul.products li.product,
+.woocommerce-page ul.products li.product {
+	float: none;
+	width: auto;
+	margin: 0;
+	padding: 1rem;
+	border: 1px solid var(--color-line);
+	border-radius: 12px;
+	background: var(--color-white);
+}
+
+.woocommerce ul.products li.product a img {
+	border-radius: 8px;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+	color: var(--color-ink);
+	font-family: var(--font-display);
+	font-size: 1.25rem;
+}
+
+.woocommerce div.product div.images,
+.woocommerce div.product div.summary {
+	margin-top: 0;
+}
+
+.woocommerce div.product .product_title {
+	font-family: var(--font-display);
+	font-size: clamp(2rem, 4vw, 3.5rem);
+	font-weight: 400;
+}
+
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button,
+.woocommerce #respond input#submit,
+.woocommerce a.button.alt,
+.woocommerce button.button.alt {
+	min-height: 44px;
+	padding: 0.75rem 1.2rem;
+	border: 0;
+	border-radius: 4px;
+	background: var(--color-primary);
+	color: var(--color-white);
+	font-weight: 700;
+}
+
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.woocommerce input.button:hover,
+.woocommerce #respond input#submit:hover,
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover {
+	background: var(--color-ink);
+	color: var(--color-white);
+}
+
+.woocommerce div.product form.cart .variations select,
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce .quantity .qty {
+	min-height: 44px;
+	padding: 0.65rem;
+	border: 1px solid var(--color-line);
+	border-radius: 4px;
+	background: var(--color-white);
+}
+
+.woocommerce table.shop_table {
+	border-color: var(--color-line);
+	border-radius: 8px;
+}
+
+.woocommerce .woocommerce-message,
+.woocommerce .woocommerce-info,
+.woocommerce .woocommerce-error {
+	border-top-color: var(--color-primary);
+	background: var(--color-white);
+}
+
 .about-page {
 	overflow: hidden;
 }
@@ -1331,6 +1475,10 @@ textarea {
 }
 
 @media (max-width: 900px) {
+	.services-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
 	.hero-inner {
 		grid-template-columns: 1fr 0.7fr;
 		gap: 1rem;
@@ -1355,6 +1503,17 @@ textarea {
 @media (max-width: 720px) {
 	.site-header-inner {
 		min-height: 76px;
+	}
+
+	.woocommerce .products,
+	.woocommerce-page .products {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.8rem;
+	}
+
+	.woocommerce ul.products li.product,
+	.woocommerce-page ul.products li.product {
+		font-size: 0.9rem;
 	}
 
 	.site-description {
@@ -1463,6 +1622,8 @@ textarea {
 	.services-grid,
 	.about-values-grid,
 	.post-grid,
+	.woocommerce .products,
+	.woocommerce-page .products,
 	.archive-main .post-grid {
 		grid-template-columns: 1fr;
 	}

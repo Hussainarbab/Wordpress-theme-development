@@ -15,7 +15,7 @@
 			<?php if ( has_custom_logo() ) : ?>
 				<?php the_custom_logo(); ?>
 			<?php else : ?>
-				<a class="site-title" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a>
+				<a class="site-title" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php echo esc_html( get_theme_mod( 'my_first_theme_brand_name', __( 'Nexa Studio', 'my-first-theme' ) ) ); ?></a>
 			<?php endif; ?>
 			<?php $site_description = get_bloginfo( 'description', 'display' ); ?>
 			<?php if ( $site_description ) : ?>

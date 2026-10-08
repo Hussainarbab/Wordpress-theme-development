@@ -1,7 +1,7 @@
 <footer class="site-footer">
 	<div class="site-footer-inner">
 		<div class="footer-brand">
-			<a class="footer-site-title" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+			<a class="footer-site-title" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo esc_html( get_theme_mod( 'my_first_theme_brand_name', __( 'Nexa Studio', 'my-first-theme' ) ) ); ?></a>
 			<p><?php echo esc_html( get_bloginfo( 'description' ) ); ?></p>
 		</div>
 
@@ -26,7 +26,7 @@
 				/* translators: 1: current year, 2: site name */
 				esc_html__( '© %1$s %2$s. All rights reserved.', 'my-first-theme' ),
 				esc_html( gmdate( 'Y' ) ),
-				esc_html( get_bloginfo( 'name' ) )
+				esc_html( get_theme_mod( 'my_first_theme_brand_name', __( 'Nexa Studio', 'my-first-theme' ) ) )
 			);
 			?>
 		</p>

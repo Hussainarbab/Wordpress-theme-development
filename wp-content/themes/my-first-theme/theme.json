@@ -1,0 +1,136 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.0/theme.json",
+	"version": 2,
+	"settings": {
+		"appearanceTools": true,
+		"color": {
+			"custom": true,
+			"customGradient": true,
+			"duotone": [],
+			"gradients": [],
+			"palette": [
+				{
+					"color": "#111a35",
+					"name": "Nexa ink",
+					"slug": "nexa-ink"
+				},
+				{
+					"color": "#7157f5",
+					"name": "Nexa violet",
+					"slug": "nexa-violet"
+				},
+				{
+					"color": "#4e9eff",
+					"name": "Nexa blue",
+					"slug": "nexa-blue"
+				},
+				{
+					"color": "#a9f6ee",
+					"name": "Nexa mint",
+					"slug": "nexa-mint"
+				},
+				{
+					"color": "#f7f8fc",
+					"name": "Nexa paper",
+					"slug": "nexa-paper"
+				},
+				{
+					"color": "#ffffff",
+					"name": "White",
+					"slug": "white"
+				}
+			]
+		},
+		"layout": {
+			"contentSize": "800px",
+			"wideSize": "1180px"
+		},
+		"spacing": {
+			"units": [
+				"%",
+				"px",
+				"em",
+				"rem",
+				"vw",
+				"vh"
+			],
+			"padding": true,
+			"margin": true
+		},
+		"typography": {
+			"fluid": true,
+			"customFontSize": true,
+			"fontFamilies": [
+				{
+					"fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+					"name": "Modern sans serif",
+					"slug": "nexa-sans"
+				},
+				{
+					"fontFamily": "Georgia, \"Times New Roman\", serif",
+					"name": "Classic serif",
+					"slug": "nexa-serif"
+				}
+			],
+			"fontSizes": [
+				{
+					"fluid": false,
+					"name": "Small",
+					"size": "0.875rem",
+					"slug": "small"
+				},
+				{
+					"fluid": false,
+					"name": "Normal",
+					"size": "1rem",
+					"slug": "normal"
+				},
+				{
+					"fluid": {
+						"max": "1.5rem",
+						"min": "1.25rem"
+					},
+					"name": "Medium",
+					"size": "1.35rem",
+					"slug": "medium"
+				},
+				{
+					"fluid": {
+						"max": "2.25rem",
+						"min": "1.75rem"
+					},
+					"name": "Large",
+					"size": "2rem",
+					"slug": "large"
+				}
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#f7f8fc",
+			"text": "#111a35"
+		},
+		"typography": {
+			"fontFamily": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+			"fontSize": "1rem",
+			"lineHeight": "1.7"
+		},
+		"elements": {
+			"button": {
+				"border": {
+					"radius": "4px"
+				},
+				"color": {
+					"background": "#7157f5",
+					"text": "#ffffff"
+				}
+			},
+			"link": {
+				"color": {
+					"text": "#7157f5"
+				}
+			}
+		}
+	}
+}
