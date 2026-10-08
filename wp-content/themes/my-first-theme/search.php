@@ -2,8 +2,16 @@
 
 <main id="main-content" class="archive-layout">
 	<header class="archive-header">
-		<p class="eyebrow"><?php esc_html_e( 'The journal', 'my-first-theme' ); ?></p>
-		<h1><?php esc_html_e( 'Latest stories', 'my-first-theme' ); ?></h1>
+		<p class="eyebrow"><?php esc_html_e( 'Search the site', 'my-first-theme' ); ?></p>
+		<h1>
+			<?php
+			printf(
+				/* translators: %s: search query */
+				esc_html__( 'Results for “%s”', 'my-first-theme' ),
+				esc_html( get_search_query() )
+			);
+			?>
+		</h1>
 	</header>
 
 	<?php if ( have_posts() ) : ?>
